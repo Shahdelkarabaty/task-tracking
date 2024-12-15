@@ -40,7 +40,7 @@ const filteredTasks = computed(() => {
 });
 
 const vOverdue = {
-  mounted: (el, binding) => {
+  mounted: (el: any, binding: any) => {
     const deadline = new Date(binding.value);
     const now = new Date();
 
@@ -53,6 +53,20 @@ const vOverdue = {
 
 <template>
   <div class="p-6">
+    <header class="mb-4">
+      <nav class="text-center">
+        <RouterLink
+          to="/home"
+          class="text-sm text-blue-500 hover:underline mx-2"
+          >Home</RouterLink
+        >
+        <RouterLink
+          to="/addTask"
+          class="text-sm text-blue-500 hover:underline mx-2"
+          >Add Task</RouterLink
+        >
+      </nav>
+    </header>
     <div class="flex justify-between items-center mb-4">
       <input
         v-model="searchQuery"
@@ -116,15 +130,3 @@ const vOverdue = {
     </DataView>
   </div>
 </template>
-
-<style scoped>
-.btn-secondary {
-  @apply bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-600;
-}
-.btn-danger {
-  @apply bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600;
-}
-.is-overdue {
-  background-color: #ffe6e6;
-}
-</style>

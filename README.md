@@ -2,7 +2,6 @@
 
 A task management application built with Vue.js that provides a grid and list view for tasks. The app allows users to search, view, edit, delete, and manage their tasks. It includes dynamic styling, reusable components, and responsive design.
 
-
 ## Features
 
 - Dynamic Task Views: Toggle between grid and list layouts using PrimeVue's `DataView`.
@@ -13,7 +12,6 @@ A task management application built with Vue.js that provides a grid and list vi
 - Responsive Design: Designed to work seamlessly across devices.
 - Overdue Task Highlighting: Tasks past their deadlines are visually highlighted.
 
-
 ## Technologies Used
 
 ### Frontend
@@ -23,11 +21,9 @@ A task management application built with Vue.js that provides a grid and list vi
 - [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework.
 - [Vite](https://vitejs.dev/) - Build tool for modern web applications.
 
-### Backend 
+### Backend
 
 - Integration-ready for any backend API for task management.
-
-
 
 # tasktracking
 
@@ -61,4 +57,10 @@ npm run dev
 
 ```sh
 npm run build
+```
+
+## connecting to backend
+
+```sh
+npx json-server --watch data/db.json --port 8000
 ```
