@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from "vue";
 import DataView from "primevue/dataview";
 import SelectButton from "primevue/selectbutton";
 import { useTaskStore } from "@/stores/taskStore";
+import { Button } from "primevue";
 
 const searchQuery = ref("");
 const taskStore = useTaskStore();
@@ -55,9 +56,7 @@ const vOverdue = {
   <div class="p-6">
     <header class="mb-4">
       <nav class="text-center">
-        <RouterLink
-          to="/home"
-          class="text-sm text-blue-500 hover:underline mx-2"
+        <RouterLink to="/" class="text-sm text-blue-500 hover:underline mx-2"
           >Home</RouterLink
         >
         <RouterLink
@@ -94,11 +93,16 @@ const vOverdue = {
             </div>
             <div>
               <RouterLink :to="`/tasks/edit/${item.id}`">
-                <button class="btn-secondary mr-2">Edit</button>
+                <Button class="!bg-sky-700 hover:!bg-sky-60 mr-2">Edit</Button>
               </RouterLink>
-              <button class="btn-danger" @click="deleteTask(item.id)">
+              <Button
+                severity="danger"
+                class="btn-danger"
+                outlined
+                @click="deleteTask(item.id)"
+              >
                 Delete
-              </button>
+              </Button>
             </div>
           </li>
         </ul>

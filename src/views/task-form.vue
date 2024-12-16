@@ -78,7 +78,7 @@ const onSubmit = async () => {
         <header class="mb-4">
           <nav class="text-center">
             <RouterLink
-              to="/home"
+              to="/"
               class="text-sm text-blue-500 hover:underline mx-2"
               >Home</RouterLink
             >

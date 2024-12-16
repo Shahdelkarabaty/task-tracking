@@ -24,6 +24,7 @@ app.component("taskDetail", TaskDetail);
 app.component("DataTable", DataTable);
 app.component("TaskColumn", Column);
 app.component("DataView", DataView);
+
 app.use(ToastService);
 
 const pinia = createPinia();
