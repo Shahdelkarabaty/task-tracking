@@ -7,11 +7,16 @@ import { useAuthStore } from "@/stores/authStore";
 import { toTypedSchema } from "@vee-validate/zod";
 import { authSchema } from "@/schemas/user-schema";
 import type { userAuth } from "@/models/auth.model";
+import { Form, useForm } from "vee-validate";
 
 const register = ref(false);
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
+
+const { errors } = useForm({
+  validationSchema: authSchema,
+});
 
 const toast = useToast();
 const authStore = useAuthStore();
@@ -26,7 +31,6 @@ const submitForm = async () => {
 
     if (register) {
       if (confirmPassword.value !== formInputs.password) {
-        // showErrToast(toast, "Passwords don't match.");
         return;
       }
       await authStore.register(formInputs);
@@ -68,7 +72,7 @@ const submitForm = async () => {
           {{ register ? "Register" : "Login" }}
         </div>
 
-        <form @submit.prevent="submitForm">
+        <Form @submit.prevent="submitForm" :validate-schema="authSchema">
           <div class="mb-4">
             <label class="block text-sm font-semibold text-gray-700"
               >Email</label
@@ -110,7 +114,7 @@ const submitForm = async () => {
             label="Continue"
             class="w-full p-2 bg-blue-500 text-white rounded-md mt-4 hover:bg-blue-600"
           ></Button>
-        </form>
+        </Form>
       </div>
     </div>
   </div>
