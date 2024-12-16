@@ -10,8 +10,9 @@ export const useTaskStore = defineStore("tasks", () => {
   const getTasks = async () => {
     try {
       const response = await httpClient.get("/api/todos");
-      console.log(response);
+      console.log("response:", response.data.todos);
       tasks.value = response.data.todos;
+      console.log("tasks:", tasks.value);
     } catch (error) {
       console.error("Failed to fetch tasks:", error);
     }
@@ -41,7 +42,7 @@ export const useTaskStore = defineStore("tasks", () => {
         `/api/todos/${taskId}`,
         updatedTask
       );
-      const index = tasks.value.findIndex((task) => task.id === taskId);
+      const index = tasks.value.findIndex((task) => task._id === taskId);
       if (index !== -1) {
         tasks.value[index] = response.data;
       }
@@ -51,9 +52,10 @@ export const useTaskStore = defineStore("tasks", () => {
   };
 
   const deleteTask = async (taskId: string) => {
+    console.log("deleting_id:", taskId);
     try {
       await httpClient.delete(`/api/todos/${taskId}`);
-      tasks.value = tasks.value.filter((task) => task.id !== taskId);
+      tasks.value = tasks.value.filter((task) => task._id !== taskId);
     } catch (error) {
       console.error("Failed to delete task:", error);
     }

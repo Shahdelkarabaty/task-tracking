@@ -7,11 +7,10 @@ export enum Status {
 }
 
 export type Todo = {
-  id: string;
+  _id: string;
   title: string;
   status: Status;
   deadline: string;
 };
 
-export type TodoRequest = Omit<Todo, "id">;
-
+export type TodoRequest = Omit<Todo, "_id">;

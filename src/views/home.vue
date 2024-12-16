@@ -75,12 +75,12 @@ const vOverdue = {
       />
       <SelectButton v-model="layout" :options="options" class="w-40" />
     </div>
-    <DataView :value="filteredTasks" :layout="layout" dataKey="id">
+    <DataView :value="filteredTasks" :layout="layout" dataKey="_id">
       <template #list="slotProps">
         <ul class="list-none p-0">
           <li
             v-for="item in slotProps.items"
-            :key="item.id"
+            :key="item._id"
             v-overdue="item.deadline"
             class="p-4 border-b border-gray-200 flex justify-between items-center"
           >
@@ -90,16 +90,19 @@ const vOverdue = {
               <p :class="getStatusClass(item.status)" class="text-sm">
                 Status: {{ item.status }}
               </p>
+              <p>id+{{ item._id }}</p>
             </div>
             <div>
-              <RouterLink :to="`/tasks/edit/${item.id}`">
-                <Button class="!bg-sky-700 hover:!bg-sky-60 mr-2">Edit</Button>
+              <RouterLink :to="`/tasks/edit/${item._id}`">
+                <Button class="!bg-sky-600 hover:!bg-sky-500 mr-2 w-20"
+                  >Edit</Button
+                >
               </RouterLink>
               <Button
                 severity="danger"
-                class="btn-danger"
+                class="btn-danger w-20"
                 outlined
-                @click="deleteTask(item.id)"
+                @click="deleteTask(item._id)"
               >
                 Delete
               </Button>
@@ -111,7 +114,7 @@ const vOverdue = {
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div
             v-for="item in slotProps.items"
-            :key="item.id"
+            :key="item._id"
             v-overdue="item.deadline"
             class="p-4 bg-white shadow-md rounded-md"
           >
@@ -121,12 +124,19 @@ const vOverdue = {
               Status: {{ item.status }}
             </p>
             <div class="flex justify-end mt-4">
-              <RouterLink :to="`/tasks/edit/${item.id}`">
-                <button class="btn-secondary mr-2">Edit</button>
+              <RouterLink :to="`/tasks/edit/${item._id}`">
+                <Button class="!bg-sky-600 hover:!bg-sky-500 mr-2 w-20"
+                  >Edit</Button
+                >
               </RouterLink>
-              <button class="btn-danger" @click="deleteTask(item.id)">
+              <Button
+                severity="danger"
+                class="btn-danger w-20"
+                outlined
+                @click="deleteTask(item._id)"
+              >
                 Delete
-              </button>
+              </Button>
             </div>
           </div>
         </div>
