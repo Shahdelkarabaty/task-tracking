@@ -6,11 +6,15 @@ A task management application built with Vue.js that provides a grid and list vi
 
 - Dynamic Task Views: Toggle between grid and list layouts using PrimeVue's `DataView`.
 - Search Functionality: Search tasks by title in real time.
-- Task Management: Edit and delete tasks directly from the interface.
+- Task Management: Edit addd, and delete tasks directly from the interface.
 - Reusable Task Card Component: Customizable task cards using Vue's slot functionality.
 - Dynamic Styling: Task status is color-coded (`To Do`, `In Progress`, `Completed`).
 - Responsive Design: Designed to work seamlessly across devices.
 - Overdue Task Highlighting: Tasks past their deadlines are visually highlighted.
+- Users can log in with a valid email and password to access the application.
+- Easily mark tasks as either In Progress or Completed.
+- Permissions and roles management to control user access and actions.
+- Displaying a chart showing the number of completed, in-progress, and pending tasks.
 
 ## Technologies Used
 
@@ -61,6 +65,5 @@ npm run build
 
 ## connecting to backend
 
-```sh
-npx json-server --watch data/db.json --port 8000
-```
+- clone this repo : https://github.com/saver711/todo-api
+- follow the setup instructions to run the backend
