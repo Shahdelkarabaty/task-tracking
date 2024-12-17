@@ -4,9 +4,12 @@ import DataView from "primevue/dataview";
 import SelectButton from "primevue/selectbutton";
 import { useTaskStore } from "@/stores/taskStore";
 import { Button } from "primevue";
+import { useAuthStore } from "@/stores/authStore";
+import { userRole } from "@/models/auth.model";
 
 const searchQuery = ref("");
 const taskStore = useTaskStore();
+const authStore = useAuthStore();
 const layout = ref<"list" | "grid">("grid");
 const options = ["list", "grid"];
 
@@ -35,10 +38,36 @@ const deleteTask = async (taskId: string) => {
 };
 
 const filteredTasks = computed(() => {
-  return taskStore.tasks.filter((task) =>
+  let tasks = taskStore.tasks.filter((task) =>
     task.title.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
+
+  if (authStore.user?.role === userRole.ADMIN) {
+    tasks = tasks.filter((task) => task.status !== "COMPLETED");
+  }
+
+  return tasks;
 });
+
+const logout = () => {
+  authStore.logout();
+};
+
+const startTask = async (taskId: string) => {
+  try {
+    await taskStore.startTask(taskId);
+  } catch (error) {
+    console.error("Failed to start task:", error);
+  }
+};
+
+const completeTask = async (taskId: string) => {
+  try {
+    await taskStore.completeTask(taskId);
+  } catch (error) {
+    console.error("Failed to complete task:", error);
+  }
+};
 
 const vOverdue = {
   mounted: (el: any, binding: any) => {
@@ -56,12 +85,10 @@ const vOverdue = {
   <div class="p-6">
     <header class="mb-4">
       <nav class="text-center">
-        <RouterLink to="/" class="text-sm text-blue-500 hover:underline mx-2"
+        <RouterLink to="/" class="text-sm hover:underline mx-2"
           >Home</RouterLink
         >
-        <RouterLink
-          to="/addTask"
-          class="text-sm text-blue-500 hover:underline mx-2"
+        <RouterLink to="/addTask" class="text-sm hover:underline mx-2"
           >Add Task</RouterLink
         >
       </nav>
@@ -75,6 +102,12 @@ const vOverdue = {
       />
       <SelectButton v-model="layout" :options="options" class="w-40" />
     </div>
+    <p
+      v-if="authStore.user?.role === userRole.ADMIN"
+      class="flex items-center bg-yellow-100 border-yellow-500 text-yellow-700 p-4 rounded shadow mb-5"
+    >
+      Please contact the super admin to delete any task.
+    </p>
     <DataView :value="filteredTasks" :layout="layout" dataKey="_id">
       <template #list="slotProps">
         <ul class="list-none p-0">
@@ -87,18 +120,41 @@ const vOverdue = {
             <div>
               <h3 class="text-lg font-semibold">{{ item.title }}</h3>
               <p class="text-sm text-gray-600">Deadline: {{ item.deadline }}</p>
+              <p class="text-sm text-gray-600">
+                Description: {{ item.description }}
+              </p>
+
               <p :class="getStatusClass(item.status)" class="text-sm">
                 Status: {{ item.status }}
               </p>
-              <p>id+{{ item._id }}</p>
+              <Button
+                icon="pi pi-play-circle"
+                :class="[
+                  'mr-2 mt-4  p-button-secondary',
+                  item.status === 'IN_PROGRESS' ? 'p-button-success' : '',
+                ]"
+                @click="startTask(item._id)"
+              ></Button>
+              <Button
+                icon="pi pi-check-circle"
+                :class="[
+                  'p-button-secondary',
+                  item.status === 'COMPLETED' ? 'p-button-success' : '',
+                ]"
+                class="p-button-secondary"
+                @click="completeTask(item._id)"
+              ></Button>
             </div>
             <div>
               <RouterLink :to="`/tasks/edit/${item._id}`">
-                <Button class="!bg-sky-600 hover:!bg-sky-500 mr-2 w-20"
+                <Button
+                  v-if="authStore.ability?.can('update', 'TODOS')"
+                  class="mr-2 w-20"
                   >Edit</Button
                 >
               </RouterLink>
               <Button
+                v-if="authStore.ability?.can('delete', 'TODOS')"
                 severity="danger"
                 class="btn-danger w-20"
                 outlined
@@ -120,27 +176,71 @@ const vOverdue = {
           >
             <h3 class="text-lg font-semibold">{{ item.title }}</h3>
             <p class="text-sm text-gray-600">Deadline: {{ item.deadline }}</p>
+            <p class="text-sm text-gray-600">
+              Description: {{ item.description }}
+            </p>
             <p :class="getStatusClass(item.status)" class="text-sm">
               Status: {{ item.status }}
             </p>
-            <div class="flex justify-end mt-4">
-              <RouterLink :to="`/tasks/edit/${item._id}`">
-                <Button class="!bg-sky-600 hover:!bg-sky-500 mr-2 w-20"
-                  >Edit</Button
+            <div class="flex justify-between items-center mt-4 space-x-2">
+              <div class="flex justify-start">
+                <Button
+                  icon="pi pi-play-circle"
+                  :class="[
+                    'mr-2 p-button-secondary',
+                    item.status === 'IN_PROGRESS' ? 'p-button-success' : '',
+                  ]"
+                  @click="startTask(item._id)"
+                ></Button>
+                <Button
+                  icon="pi pi-check-circle"
+                  :class="[
+                    'p-button-secondary',
+                    item.status === 'COMPLETED' ? 'p-button-success' : '',
+                  ]"
+                  class="p-button-secondary"
+                  @click="completeTask(item._id)"
+                ></Button>
+              </div>
+              <div class="flex justify-end">
+                <RouterLink :to="`/tasks/edit/${item._id}`">
+                  <Button
+                    v-if="authStore.ability?.can('update', 'TODOS')"
+                    class="mr-2 w-20"
+                    >Edit</Button
+                  >
+                </RouterLink>
+                <Button
+                  v-if="authStore.ability?.can('delete', 'TODOS')"
+                  severity="danger"
+                  class="btn-danger w-20"
+                  outlined
+                  @click="deleteTask(item._id)"
                 >
-              </RouterLink>
-              <Button
-                severity="danger"
-                class="btn-danger w-20"
-                outlined
-                @click="deleteTask(item._id)"
-              >
-                Delete
-              </Button>
+                  Delete
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </template>
     </DataView>
+
+    <footer
+      class="fixed bottom-0 right-0 p-4 bg-white shadow-md flex justify-end w-full"
+    >
+      <Button
+        icon="pi pi-sign-out"
+        class="p-button-rounded p-button-outlined p-button-secondary"
+        @click="logout"
+      ></Button>
+    </footer>
   </div>
 </template>
+
+<style scoped>
+.is-overdue {
+  background-color: #ffe6e6;
+  border-radius: 0.25rem;
+}
+</style>

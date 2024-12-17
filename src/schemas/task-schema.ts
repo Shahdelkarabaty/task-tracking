@@ -1,5 +1,3 @@
-import { toTypedSchema } from "@vee-validate/zod";
-import type { TypedSchema } from "vee-validate";
 import * as zod from "zod";
 
 export const taskSchema = zod.object({

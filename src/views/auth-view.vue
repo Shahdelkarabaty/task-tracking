@@ -8,18 +8,18 @@ const isRegister = ref(false);
 
 <template>
   <div class="p-6 max-w-lg mx-auto">
-    <div class="flex justify-around mb-4">
+    <div class="flex justify-center space-x-4">
       <button
         :class="{ 'font-bold underline': !isRegister }"
         @click="isRegister = false"
-        class="text-lg"
+        class="text-sm"
       >
         Login
       </button>
       <button
         :class="{ 'font-bold underline': isRegister }"
         @click="isRegister = true"
-        class="text-lg"
+        class="text-sm"
       >
         Register
       </button>

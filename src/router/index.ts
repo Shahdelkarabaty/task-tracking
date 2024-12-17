@@ -47,12 +47,12 @@ const router = createRouter({
     {
       path: "/addTask",
       name: "addTask",
-      component: () => import("../views/task-form.vue"),
+      component: () => import("../views/add-task.vue"),
     },
     {
       path: "/tasks/edit/:id",
       name: "editTask",
-      component: () => import("../views/task-form.vue"),
+      component: () => import("../views/edit-task.vue"),
     },
     {
       path: "/:pathMatch(.*)*",

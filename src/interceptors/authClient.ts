@@ -24,7 +24,7 @@ httpClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      useAuthStore().setUserState(null);
+      useAuthStore().setState(null);
       appRouter.push({ name: "login" });
     }
     return Promise.reject(error);

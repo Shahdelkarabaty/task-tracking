@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import type { Token, User, userAuth } from "@/models/auth.model";
-import { defineAbility } from "@casl/ability";
+import { defineAbility, PureAbility } from "@casl/ability";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import type { RouteMeta } from "vue-router";
@@ -12,30 +12,31 @@ export const useAuthStore = defineStore(
   "auth-store",
   () => {
     const user = ref<User | null>(null);
-    const isAuth = computed(() => !!user.value);
-    const ability = ref(defineAbility(() => {}));
+    const ability = ref<PureAbility>();
 
-    const setUserState = (newUser: User | null) => {
+    const setPermissions = () => {
+      ability.value = defineAbility((_) => {});
+      updatePermissions();
+    };
+    const setState = (newUser: User | null) => {
       user.value = newUser;
       updatePermissions();
     };
 
     const resetUserState = () => {
       user.value = null;
-      ability.value.update([]);
+      ability.value?.update([]);
     };
 
     const updatePermissions = () => {
       const userRole = user.value?.role;
       if (userRole) {
-        ability.value.update(
+        ability.value?.update(
           ROLES[userRole].map(({ action, resource }) => ({
             action,
             subject: resource,
           }))
         );
-      } else {
-        ability.value.update([]);
       }
     };
 
@@ -44,7 +45,7 @@ export const useAuthStore = defineStore(
         console.log("loging in with: ", formInput);
         const response = await httpClient.post("/api/auth/login", formInput);
         const decodedToken = jwtDecode<Token>(response.data.accessToken);
-        setUserState({
+        setState({
           email: formInput.email,
           token: response.data.accessToken,
           role: decodedToken.role,
@@ -64,7 +65,7 @@ export const useAuthStore = defineStore(
           token: response.data.accessToken,
           role: decodedToken.role,
         };
-        setUserState(loggedInUser);
+        setState(loggedInUser);
         router.replace("/");
       } catch (error) {
         throw error;
@@ -73,13 +74,13 @@ export const useAuthStore = defineStore(
 
     const logout = () => {
       resetUserState();
-      router.replace("/login");
+      router.replace("/auth");
     };
 
     const checkRouteAuth = (routeMeta: RouteMeta) => {
       return (
         !routeMeta.permission ||
-        ability.value.can(
+        ability.value?.can(
           (routeMeta.permission as Permissions).action,
           (routeMeta.permission as Permissions).resource
         )
@@ -87,15 +88,16 @@ export const useAuthStore = defineStore(
     };
 
     return {
+      ability,
       user,
-      isAuth,
-      setUserState,
+      setState,
       resetUserState,
       updatePermissions,
       login,
-      logout,
       checkRouteAuth,
       register,
+      logout,
+      setPermissions
     };
   },
   {

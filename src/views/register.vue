@@ -29,7 +29,6 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <form @submit="onSubmit" class="max-w-sm mx-auto p-6">
-    <div class="text-xl font-bold text-center mb-6">Register</div>
 
     <div class="mb-4">
       <label class="block text-sm font-semibold">Email</label>

@@ -1,11 +1,17 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import type { Todo, TodoRequest } from "@/models/task-model";
+import {
+  type Todo,
+  type TodoEditRequest,
+  type TodoAddRequest,
+  Status,
+} from "@/models/task-model";
 import httpClient from "@/interceptors/authClient";
 
 export const useTaskStore = defineStore("tasks", () => {
   const tasks = ref<Todo[]>([]);
   const taskByID = ref<Todo | null>(null);
+  const status = Status;
 
   const getTasks = async () => {
     try {
@@ -27,7 +33,7 @@ export const useTaskStore = defineStore("tasks", () => {
     }
   };
 
-  const addTask = async (task: TodoRequest) => {
+  const addTask = async (task: TodoAddRequest) => {
     try {
       const response = await httpClient.post("/api/todos", task);
       tasks.value.push(response.data);
@@ -36,9 +42,9 @@ export const useTaskStore = defineStore("tasks", () => {
     }
   };
 
-  const updateTask = async (taskId: string, updatedTask: Todo) => {
+  const updateTask = async (taskId: string, updatedTask: TodoEditRequest) => {
     try {
-      const response = await httpClient.patch(
+      const response = await httpClient.put(
         `/api/todos/${taskId}`,
         updatedTask
       );
@@ -48,6 +54,30 @@ export const useTaskStore = defineStore("tasks", () => {
       }
     } catch (error) {
       console.error("Failed to update task:", error);
+    }
+  };
+
+  const startTask = async (taskId: string) => {
+    try {
+      const response = await httpClient.post(`/api/todos/${taskId}/start`);
+      const index = tasks.value.findIndex((task) => task._id === taskId);
+      if (index !== -1) {
+        tasks.value[index].status = status.inProgress;
+      }
+    } catch (error) {
+      console.error("failed to start the task", error);
+    }
+  };
+
+  const completeTask = async (taskId: string) => {
+    try {
+      const response = await httpClient.post(`/api/todos/${taskId}/complete`);
+      const index = tasks.value.findIndex((task) => task._id === taskId);
+      if (index !== -1) {
+        tasks.value[index].status = status.completed;
+      }
+    } catch (error) {
+      console.error("failed to complete the task", error);
     }
   };
 
@@ -69,5 +99,7 @@ export const useTaskStore = defineStore("tasks", () => {
     addTask,
     updateTask,
     deleteTask,
+    startTask,
+    completeTask,
   };
 });

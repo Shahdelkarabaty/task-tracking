@@ -1,65 +1,48 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from "vue-router";
-import { ref, reactive, onMounted, watch } from "vue";
-import { Field, Form, useForm } from "vee-validate";
+import { ref } from "vue";
 import { useTaskStore } from "@/stores/taskStore";
-import { Status, type Todo, type TodoRequest } from "@/models/task-model";
+import { Status, type TodoAddRequest } from "@/models/task-model";
+import { useRouter } from "vue-router";
+import { Form, Field, useForm } from "vee-validate";
 import { taskSchema } from "@/schemas/task-schema";
 import { toTypedSchema } from "@vee-validate/zod";
+import { Button } from "primevue";
 
-const route = useRoute();
 const router = useRouter();
 const taskStore = useTaskStore();
 
-const isEditMode = !!route.params.id;
-const taskId = route.params.id as string;
-
-const form = reactive<TodoRequest>({
+const form = ref<TodoAddRequest>({
   title: "",
   status: Status.todo,
+  description: "",
   deadline: "",
 });
-
-const updatedTask = ref<Todo>();
-const successMessage = ref("");
-const isLoading = ref(false);
 
 const { errors } = useForm({
   validationSchema: toTypedSchema(taskSchema),
 });
 
-const touched = reactive({
+const touched = ref({
   title: false,
   deadline: false,
   status: false,
+  description: false,
 });
 
-onMounted(async () => {
-  if (isEditMode) {
-    await taskStore.getTaskById(taskId);
-    watch(
-      () => taskStore.taskByID,
-      (newValue) => {
-        if (newValue) {
-          Object.assign(form, newValue);
-        }
-      },
-      { immediate: true }
-    );
-  }
-});
+const isLoading = ref(false);
+const successMessage = ref("");
 
 const onSubmit = async () => {
   isLoading.value = true;
   try {
-    if (isEditMode) {
-      await taskStore.updateTask(taskId, form as Todo);
-      successMessage.value = "Task updated successfully!";
-    } else {
-      await taskStore.addTask(form);
-      successMessage.value = "Task added successfully!";
-      Object.assign(form, { title: "", status: Status.todo, deadline: "" });
-    }
+    await taskStore.addTask(form.value);
+    successMessage.value = "Task added successfully!";
+    form.value = {
+      title: "",
+      status: Status.todo,
+      deadline: "",
+      description: "",
+    };
     setTimeout(() => {
       successMessage.value = "";
       router.push("/");
@@ -78,22 +61,15 @@ const onSubmit = async () => {
       <div class="content">
         <header class="mb-4">
           <nav class="text-center">
-            <RouterLink
-              to="/"
-              class="text-sm text-blue-500 hover:underline mx-2"
+            <RouterLink to="/" class="text-sm hover:underline mx-2"
               >Home</RouterLink
             >
-            <RouterLink
-              to="/addTask"
-              class="text-sm text-blue-500 hover:underline mx-2"
+            <RouterLink to="/addTask" class="text-sm hover:underline mx-2"
               >Add Task</RouterLink
             >
           </nav>
         </header>
-        <h3 class="text-xl text-gray-900 text-left mb-5">
-          {{ isEditMode ? "Edit Task" : "Add a New Task" }}
-        </h3>
-
+        <h3 class="text-xl text-gray-900 text-left mb-5">Add a New Task</h3>
         <Form @submit="onSubmit" :validate-schema="taskSchema">
           <div class="flex flex-col gap-2">
             <div class="flex flex-col gap-2">
@@ -110,7 +86,17 @@ const onSubmit = async () => {
                 {{ errors.title }}
               </p>
             </div>
-
+            <div class="flex flex-col gap-2">
+              <label for="description">Description:</label>
+              <Field
+                name="description"
+                id="description"
+                type="text"
+                v-model="form.description"
+                class="border rounded px-3 py-2"
+                @blur="touched.description = true"
+              />
+            </div>
             <div class="flex flex-col gap-2">
               <label for="deadline">Deadline:</label>
               <Field
@@ -128,7 +114,6 @@ const onSubmit = async () => {
                 {{ errors.deadline }}
               </p>
             </div>
-
             <div class="flex flex-col gap-2">
               <label for="status">Select an Option:</label>
               <Field name="status"
@@ -152,15 +137,14 @@ const onSubmit = async () => {
                 {{ errors.status }}
               </p>
             </div>
-
-            <button
+            <Button
               type="submit"
-              class="px-4 py-2 bg-blue-500 text-white rounded"
+              class="px-4 py-2 rounded"
               :disabled="isLoading"
             >
               <span v-if="isLoading">Loading...</span>
-              <span v-else>{{ isEditMode ? "Update Task" : "Add Task" }}</span>
-            </button>
+              <span v-else>Add Task</span>
+            </Button>
             <p v-if="successMessage" class="text-green-500 text-center mb-4">
               {{ successMessage }}
             </p>
