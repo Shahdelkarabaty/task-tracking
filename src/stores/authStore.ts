@@ -41,6 +41,7 @@ export const useAuthStore = defineStore(
 
     const login = async (formInput: userAuth) => {
       try {
+        console.log("loging in with: ", formInput);
         const response = await httpClient.post("/api/auth/login", formInput);
         const decodedToken = jwtDecode<Token>(response.data.accessToken);
         setUserState({

@@ -5,6 +5,7 @@ import { Field, Form, useForm } from "vee-validate";
 import { useTaskStore } from "@/stores/taskStore";
 import { Status, type Todo, type TodoRequest } from "@/models/task-model";
 import { taskSchema } from "@/schemas/task-schema";
+import { toTypedSchema } from "@vee-validate/zod";
 
 const route = useRoute();
 const router = useRouter();
@@ -24,7 +25,7 @@ const successMessage = ref("");
 const isLoading = ref(false);
 
 const { errors } = useForm({
-  validationSchema: taskSchema,
+  validationSchema: toTypedSchema(taskSchema),
 });
 
 const touched = reactive({

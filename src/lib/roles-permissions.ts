@@ -1,21 +1,20 @@
 import { userRole } from "@/models/auth.model";
 
 export enum Action {
-  CREATE = 'create',
-  READ = 'read',
-  UPDATE = 'update',
-  DELETE = 'delete',
+  CREATE = "create",
+  READ = "read",
+  UPDATE = "update",
+  DELETE = "delete",
 }
 
 export type Permissions = {
-    action: Action;
-    resource: Resource;
-  };
+  action: Action;
+  resource: Resource;
+};
 
 export enum Resource {
-  TODOS = 'TODOS',
+  TODOS = "TODOS",
 }
-
 
 export const ROLES: Record<userRole, Permissions[]> = {
   [userRole.SUPER_ADMIN]: [
