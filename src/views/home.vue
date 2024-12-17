@@ -6,12 +6,14 @@ import { useTaskStore } from "@/stores/taskStore";
 import { Button } from "primevue";
 import { useAuthStore } from "@/stores/authStore";
 import { userRole } from "@/models/auth.model";
+import { useRouter } from "vue-router";
 
 const searchQuery = ref("");
 const taskStore = useTaskStore();
 const authStore = useAuthStore();
 const layout = ref<"list" | "grid">("grid");
 const options = ["list", "grid"];
+const router = useRouter();
 
 onMounted(() => {
   taskStore.getTasks();
@@ -19,11 +21,11 @@ onMounted(() => {
 
 function getStatusClass(status: string): string {
   switch (status) {
-    case "In Progress":
+    case "IN_PROGRESS":
       return "text-blue-500";
-    case "Completed":
+    case "COMPLETED":
       return "text-green-500";
-    case "To Do":
+    case "PENDING":
     default:
       return "text-gray-500";
   }
@@ -69,6 +71,10 @@ const completeTask = async (taskId: string) => {
   }
 };
 
+const addNewTask = () => {
+  router.push("/addTask");
+};
+
 const vOverdue = {
   mounted: (el: any, binding: any) => {
     const deadline = new Date(binding.value);
@@ -83,14 +89,20 @@ const vOverdue = {
 
 <template>
   <div class="p-6">
-    <header class="mb-4">
-      <nav class="text-center">
-        <RouterLink to="/" class="text-sm hover:underline mx-2"
-          >Home</RouterLink
+    <header class="mb-6">
+      <nav class="flex justify-center">
+        <RouterLink
+          to="/"
+          class="text-sm font-medium text-gray-700 hover:underline mx-2"
         >
-        <RouterLink to="/addTask" class="text-sm hover:underline mx-2"
-          >Add Task</RouterLink
+          Tasks
+        </RouterLink>
+        <RouterLink
+          to="/dashboard"
+          class="text-sm font-medium text-gray-700 hover:underline mx-2"
         >
+          Dashboard
+        </RouterLink>
       </nav>
     </header>
     <div class="flex justify-between items-center mb-4">
@@ -123,9 +135,11 @@ const vOverdue = {
               <p class="text-sm text-gray-600">
                 Description: {{ item.description }}
               </p>
-
-              <p :class="getStatusClass(item.status)" class="text-sm">
-                Status: {{ item.status }}
+              <p class="text-sm">
+                <span>Status: </span
+                ><span :class="getStatusClass(item.status)">
+                  {{ item.status }}</span
+                >
               </p>
               <Button
                 icon="pi pi-play-circle"
@@ -164,6 +178,11 @@ const vOverdue = {
               </Button>
             </div>
           </li>
+          <Button
+            icon="pi pi-plus"
+            class="mt-10 p-button-fab p-button-rounded p-button-success absolute bottom-4 left-1/2 transform -translate-x-1/2"
+            @click="addNewTask()"
+          ></Button>
         </ul>
       </template>
       <template #grid="slotProps">
@@ -179,8 +198,11 @@ const vOverdue = {
             <p class="text-sm text-gray-600">
               Description: {{ item.description }}
             </p>
-            <p :class="getStatusClass(item.status)" class="text-sm">
-              Status: {{ item.status }}
+            <p class="text-sm">
+              <span>Status: </span
+              ><span :class="getStatusClass(item.status)">
+                {{ item.status }}</span
+              >
             </p>
             <div class="flex justify-between items-center mt-4 space-x-2">
               <div class="flex justify-start">
@@ -223,6 +245,11 @@ const vOverdue = {
             </div>
           </div>
         </div>
+        <Button
+          icon="pi pi-plus"
+          class="mt-10 p-button-fab p-button-rounded p-button-success absolute bottom-4 left-1/2 transform -translate-x-1/2"
+          @click="addNewTask()"
+        ></Button>
       </template>
     </DataView>
 

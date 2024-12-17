@@ -59,16 +59,23 @@ const onSubmit = async () => {
   <div class="card flex flex-col justify-center p-6">
     <div class="card-content">
       <div class="content">
-        <header class="mb-4">
-          <nav class="text-center">
-            <RouterLink to="/" class="text-sm hover:underline mx-2"
-              >Home</RouterLink
+        <header class="mb-6">
+          <nav class="flex justify-center">
+            <RouterLink
+              to="/"
+              class="text-sm font-medium text-gray-700 hover:underline mx-2"
             >
-            <RouterLink to="/addTask" class="text-sm hover:underline mx-2"
-              >Add Task</RouterLink
+              Tasks
+            </RouterLink>
+            <RouterLink
+              to="/dashboard"
+              class="text-sm font-medium text-gray-700 hover:underline mx-2"
             >
+              Dashboard
+            </RouterLink>
           </nav>
         </header>
+
         <h3 class="text-xl text-gray-900 text-left mb-5">Add a New Task</h3>
         <Form @submit="onSubmit" :validate-schema="taskSchema">
           <div class="flex flex-col gap-2">

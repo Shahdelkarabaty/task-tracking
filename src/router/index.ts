@@ -50,6 +50,11 @@ const router = createRouter({
       component: () => import("../views/add-task.vue"),
     },
     {
+      path: "/dashboard",
+      name: "dashboard",
+      component: () => import("../views/dashboard.vue"),
+    },
+    {
       path: "/tasks/edit/:id",
       name: "editTask",
       component: () => import("../views/edit-task.vue"),

@@ -19,6 +19,7 @@
     "@vee-validate/zod": "^4.14.7",
     "axios": "^1.7.9",
     "bulma": "^1.0.2",
+    "chart.js": "^4.4.7",
     "jwt-decode": "^4.0.0",
     "pinia": "^2.3.0",
     "pinia-plugin-persistedstate": "^4.1.3",

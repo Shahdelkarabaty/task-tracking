@@ -29,7 +29,6 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <form @submit="onSubmit" class="max-w-sm mx-auto p-6">
-
     <div class="mb-4">
       <label class="block text-sm font-semibold">Email</label>
       <InputText
@@ -47,7 +46,7 @@ const onSubmit = handleSubmit(async (values) => {
         v-model="password"
         v-bind="passwordAttrs"
         type="password"
-        placeholder="********"
+        placeholder="******"
         class="w-full p-2 border border-gray-300 rounded-md"
       />
       <div class="text-red-500 text-sm">{{ errors.password }}</div>
@@ -59,7 +58,7 @@ const onSubmit = handleSubmit(async (values) => {
         v-model="confirmPassword"
         v-bind="confirmPasswordAttrs"
         type="password"
-        placeholder="********"
+        placeholder="******"
         class="w-full p-2 border border-gray-300 rounded-md"
       />
       <div class="text-red-500 text-sm">{{ errors.confirmPassword }}</div>
@@ -69,7 +68,7 @@ const onSubmit = handleSubmit(async (values) => {
       type="submit"
       :disabled="isPending"
       label="Register"
-      class="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+      class="w-full p-2 text-white rounded-md"
     />
   </form>
 </template>

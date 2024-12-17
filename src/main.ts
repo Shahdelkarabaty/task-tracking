@@ -11,6 +11,7 @@ import { useAuthStore } from "./stores/authStore";
 import { abilitiesPlugin, Can } from "@casl/vue";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import "primeicons/primeicons.css";
+import Chart from "primevue/chart";
 
 const app = createApp(App);
 
