@@ -18,16 +18,6 @@ const taskGuard: NavigationGuard = async (to, from, next) => {
     await taskStore.getTasks();
     const task = taskStore.taskByID;
 
-    // if (
-    //   task?.status === Status.completed &&
-    //   authStore.user?.role === userRole.ADMIN
-    // ) {
-    //   return next({ name: "not-found" });
-    // }
-
-    // if (!task) {
-    //   return next({ name: "not-found" });
-    // }
     next();
   } catch (error) {
     console.error("Error:", error);
