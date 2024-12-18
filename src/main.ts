@@ -7,7 +7,7 @@ import router from "./router";
 import { DataView, ToastService } from "primevue";
 import Aura from "@primevue/themes/aura";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
-import { useAuthStore } from "./stores/authStore";
+import { useAuthStore } from "./stores/auth-store";
 import { abilitiesPlugin, Can } from "@casl/vue";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import "primeicons/primeicons.css";

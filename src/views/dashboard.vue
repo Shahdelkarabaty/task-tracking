@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTaskStore } from "@/stores/taskStore";
+import { useTaskStore } from "@/stores/task-store";
 import { ref } from "vue";
 import { onMounted } from "vue";
 import Chart from "primevue/chart";

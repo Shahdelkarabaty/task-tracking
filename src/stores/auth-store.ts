@@ -6,7 +6,7 @@ import { computed, ref } from "vue";
 import type { RouteMeta } from "vue-router";
 import router from "@/router";
 import { ROLES, type Permissions } from "@/lib/roles-permissions";
-import httpClient from "@/interceptors/authClient";
+import httpClient from "@/interceptors/auth-client";
 
 export const useAuthStore = defineStore(
   "auth-store",
@@ -97,7 +97,7 @@ export const useAuthStore = defineStore(
       checkRouteAuth,
       register,
       logout,
-      setPermissions
+      setPermissions,
     };
   },
   {

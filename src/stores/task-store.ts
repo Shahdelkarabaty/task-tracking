@@ -6,7 +6,7 @@ import {
   type TodoAddRequest,
   Status,
 } from "@/models/task-model";
-import httpClient from "@/interceptors/authClient";
+import httpClient from "@/interceptors/auth-client";
 
 export const useTaskStore = defineStore("tasks", () => {
   const tasks = ref<Todo[]>([]);

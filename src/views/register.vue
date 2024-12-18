@@ -4,7 +4,7 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import { ref } from "vue";
 import { registerSchema } from "@/schemas/register-schema";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore } from "@/stores/auth-store";
 
 const { errors, handleSubmit, defineField } = useForm({
   validationSchema: registerSchema,

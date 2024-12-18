@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, watch, onMounted } from "vue";
-import { useTaskStore } from "@/stores/taskStore";
+import { useTaskStore } from "@/stores/task-store";
 import { type Todo, type TodoEditRequest } from "@/models/task-model";
 import { useRoute, useRouter } from "vue-router";
 import { Form, Field, useForm } from "vee-validate";

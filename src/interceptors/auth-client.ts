@@ -1,6 +1,6 @@
 import axios from "axios";
 import appRouter from "../router";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore } from "@/stores/auth-store";
 
 const httpClient = axios.create({
   baseURL: "http://localhost:5000",

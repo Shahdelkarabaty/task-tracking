@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useTaskStore } from "@/stores/taskStore";
+import { useTaskStore } from "@/stores/task-store";
 import { Status, type TodoAddRequest } from "@/models/task-model";
 import { useRouter } from "vue-router";
 import { Form, Field, useForm } from "vee-validate";

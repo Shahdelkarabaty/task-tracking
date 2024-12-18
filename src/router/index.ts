@@ -4,8 +4,8 @@ import {
   createWebHistory,
   type NavigationGuard,
 } from "vue-router";
-import { useAuthStore } from "@/stores/authStore";
-import { useTaskStore } from "@/stores/taskStore";
+import { useAuthStore } from "@/stores/auth-store";
+import { useTaskStore } from "@/stores/task-store";
 import { Status } from "@/models/task-model";
 import { userRole } from "@/models/auth.model";
 

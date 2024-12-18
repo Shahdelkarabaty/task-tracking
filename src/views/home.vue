@@ -2,12 +2,13 @@
 import { computed, onMounted, ref } from "vue";
 import DataView from "primevue/dataview";
 import SelectButton from "primevue/selectbutton";
-import { useTaskStore } from "@/stores/taskStore";
+import { useTaskStore } from "@/stores/task-store";
 import { Button } from "primevue";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore } from "@/stores/auth-store";
 import { userRole } from "@/models/auth.model";
 import { useRouter } from "vue-router";
 import { vOverdue } from "@/dir/overdue.directive";
+
 
 const searchQuery = ref("");
 const taskStore = useTaskStore();
