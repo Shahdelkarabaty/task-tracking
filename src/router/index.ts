@@ -45,7 +45,7 @@ const router = createRouter({
       beforeEnter: [taskGuard],
     },
     {
-      path: "/addTask",
+      path: "/add",
       name: "addTask",
       component: () => import("../views/add-task.vue"),
     },

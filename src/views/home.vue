@@ -7,6 +7,7 @@ import { Button } from "primevue";
 import { useAuthStore } from "@/stores/authStore";
 import { userRole } from "@/models/auth.model";
 import { useRouter } from "vue-router";
+import { vOverdue } from "@/dir/overdue.directive";
 
 const searchQuery = ref("");
 const taskStore = useTaskStore();
@@ -72,18 +73,7 @@ const completeTask = async (taskId: string) => {
 };
 
 const addNewTask = () => {
-  router.push("/addTask");
-};
-
-const vOverdue = {
-  mounted: (el: any, binding: any) => {
-    const deadline = new Date(binding.value);
-    const now = new Date();
-
-    if (deadline < now) {
-      el.classList.add("is-overdue");
-    }
-  },
+  router.push("/add");
 };
 </script>
 
@@ -178,11 +168,6 @@ const vOverdue = {
               </Button>
             </div>
           </li>
-          <Button
-            icon="pi pi-plus"
-            class="mt-10 p-button-fab p-button-rounded p-button-success absolute bottom-4 left-1/2 transform -translate-x-1/2"
-            @click="addNewTask()"
-          ></Button>
         </ul>
       </template>
       <template #grid="slotProps">
@@ -245,13 +230,14 @@ const vOverdue = {
             </div>
           </div>
         </div>
-        <Button
-          icon="pi pi-plus"
-          class="mt-10 p-button-fab p-button-rounded p-button-success absolute bottom-4 left-1/2 transform -translate-x-1/2"
-          @click="addNewTask()"
-        ></Button>
       </template>
     </DataView>
+
+    <Button
+      icon="pi pi-plus"
+      class="mt-10 p-button-fab p-button-rounded p-button-success absolute bottom-4 left-1/2 transform -translate-x-1/2"
+      @click="addNewTask()"
+    ></Button>
 
     <footer
       class="fixed bottom-0 right-0 p-4 bg-white shadow-md flex justify-end w-full"

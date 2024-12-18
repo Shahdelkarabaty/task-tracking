@@ -4,7 +4,7 @@ import PrimeVue from "primevue/config";
 import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./router";
-import { Column, DataTable, DataView, ToastService } from "primevue";
+import { DataView, ToastService } from "primevue";
 import Aura from "@primevue/themes/aura";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { useAuthStore } from "./stores/authStore";
@@ -21,8 +21,6 @@ app.use(PrimeVue, {
   },
 });
 
-app.component("DataTable", DataTable);
-app.component("TaskColumn", Column);
 app.component("DataView", DataView);
 
 app.use(ToastService);
